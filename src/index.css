@@ -1,0 +1,224 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* VeriSearch Design System - "Calm Intelligence" */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+@layer base {
+  :root {
+    /* Cream/Off-white base */
+    --background: 45 33% 97%;
+    --foreground: 220 20% 20%;
+
+    /* Cards with subtle warmth */
+    --card: 45 30% 98%;
+    --card-foreground: 220 20% 20%;
+
+    /* Popover surfaces */
+    --popover: 45 30% 99%;
+    --popover-foreground: 220 20% 20%;
+
+    /* Pastel Blue Primary */
+    --primary: 210 60% 65%;
+    --primary-foreground: 220 20% 15%;
+
+    /* Sage Green Secondary */
+    --secondary: 140 30% 92%;
+    --secondary-foreground: 150 25% 25%;
+
+    /* Muted tones */
+    --muted: 45 20% 94%;
+    --muted-foreground: 220 10% 50%;
+
+    /* Sage Green Accent */
+    --accent: 150 35% 90%;
+    --accent-foreground: 150 30% 25%;
+
+    /* Destructive */
+    --destructive: 0 70% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Borders & Inputs */
+    --border: 45 20% 88%;
+    --input: 45 20% 90%;
+    --ring: 210 60% 65%;
+
+    --radius: 1rem;
+
+    /* Custom VeriSearch tokens */
+    --sage: 150 35% 90%;
+    --sage-dark: 150 30% 40%;
+    --ocean: 210 60% 65%;
+    --ocean-dark: 210 70% 50%;
+    --cream: 45 33% 97%;
+    --slate: 220 20% 20%;
+    
+    /* Glassmorphism */
+    --glass-bg: 45 30% 98% / 0.7;
+    --glass-border: 45 20% 88% / 0.5;
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(210 60% 65%), hsl(150 35% 70%));
+    --gradient-sage: linear-gradient(135deg, hsl(150 35% 90%), hsl(140 30% 85%));
+    --gradient-ocean: linear-gradient(135deg, hsl(210 70% 60%), hsl(200 65% 55%));
+
+    /* Sidebar */
+    --sidebar-background: 45 30% 96%;
+    --sidebar-foreground: 220 20% 25%;
+    --sidebar-primary: 210 60% 65%;
+    --sidebar-primary-foreground: 220 20% 15%;
+    --sidebar-accent: 150 35% 90%;
+    --sidebar-accent-foreground: 150 30% 25%;
+    --sidebar-border: 45 20% 88%;
+    --sidebar-ring: 210 60% 65%;
+  }
+
+  .dark {
+    /* Deep Ocean Blue base */
+    --background: 222 47% 11%;
+    --foreground: 210 30% 95%;
+
+    /* Deep cards */
+    --card: 222 45% 13%;
+    --card-foreground: 210 30% 95%;
+
+    /* Popover */
+    --popover: 222 45% 12%;
+    --popover-foreground: 210 30% 95%;
+
+    /* Muted Teal Primary */
+    --primary: 175 45% 55%;
+    --primary-foreground: 222 40% 10%;
+
+    /* Darker Sage Secondary */
+    --secondary: 170 25% 20%;
+    --secondary-foreground: 170 30% 85%;
+
+    /* Muted tones */
+    --muted: 222 35% 18%;
+    --muted-foreground: 210 15% 60%;
+
+    /* Teal Accent */
+    --accent: 175 35% 25%;
+    --accent-foreground: 175 40% 90%;
+
+    /* Destructive */
+    --destructive: 0 60% 45%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Borders & Inputs */
+    --border: 222 30% 22%;
+    --input: 222 30% 20%;
+    --ring: 175 45% 55%;
+
+    /* Custom dark tokens */
+    --sage: 170 30% 25%;
+    --sage-dark: 170 35% 50%;
+    --ocean: 175 45% 55%;
+    --ocean-dark: 175 50% 45%;
+    --cream: 210 30% 95%;
+    --slate: 222 47% 11%;
+    
+    /* Glassmorphism dark */
+    --glass-bg: 222 45% 15% / 0.8;
+    --glass-border: 222 30% 25% / 0.5;
+    
+    /* Gradients dark */
+    --gradient-primary: linear-gradient(135deg, hsl(175 45% 55%), hsl(170 40% 45%));
+    --gradient-sage: linear-gradient(135deg, hsl(170 30% 25%), hsl(175 25% 20%));
+    --gradient-ocean: linear-gradient(135deg, hsl(200 50% 35%), hsl(210 45% 30%));
+
+    /* Sidebar dark */
+    --sidebar-background: 222 47% 9%;
+    --sidebar-foreground: 210 30% 90%;
+    --sidebar-primary: 175 45% 55%;
+    --sidebar-primary-foreground: 222 40% 10%;
+    --sidebar-accent: 175 35% 25%;
+    --sidebar-accent-foreground: 175 40% 90%;
+    --sidebar-border: 222 30% 20%;
+    --sidebar-ring: 175 45% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply backdrop-blur-xl border border-white/20 shadow-xl;
+    background: hsl(var(--glass-bg));
+  }
+
+  .glass-card-dark {
+    @apply backdrop-blur-xl border shadow-xl;
+    background: hsl(var(--glass-bg));
+    border-color: hsl(var(--glass-border));
+  }
+
+  .btn-gradient-primary {
+    background: var(--gradient-primary);
+    @apply text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02];
+  }
+
+  .btn-gradient-sage {
+    background: var(--gradient-sage);
+    @apply text-secondary-foreground shadow-md hover:shadow-lg transition-all duration-300;
+  }
+
+  .thinking-pulse {
+    animation: thinking 1.5s ease-in-out infinite;
+  }
+
+  @keyframes thinking {
+    0%, 100% {
+      opacity: 0.6;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+
+  .message-fade-in {
+    animation: messageFadeIn 0.4s ease-out forwards;
+  }
+
+  @keyframes messageFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .sidebar-slide {
+    animation: sidebarSlide 0.3s ease-out forwards;
+  }
+
+  @keyframes sidebarSlide {
+    from {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+}

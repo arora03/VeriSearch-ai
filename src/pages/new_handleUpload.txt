@@ -1,0 +1,40 @@
+  const handleUpload = async (file: File) =&gt; {
+    const newDoc: Document = {
+      id: crypto.randomUUID(),
+      name: file.name,
+      type: file.name.split('.').pop() as Document['type'],
+      status: 'uploading',
+      progress: 0,
+      uploadedAt: new Date(),
+      size: file.size,
+    };
+
+    addDocument(newDoc);
+
+    try {
+      // Actually upload to backend
+      const { ingestDocument } = await import('@/lib/api');
+      
+      // Update status to indexing
+      updateDocument(newDoc.id, { status: 'indexing', progress: undefined });
+      
+      const response = await ingestDocument(file);
+      
+      // Success - document is indexed
+      updateDocument(newDoc.id, { 
+        status: 'ready',
+        id: response.doc_id // Use the backend-generated doc_id
+      });
+      
+      toast.success('Document Uploaded!', {
+        description: ${file.name} has been indexed and is now searchable. ( chunks processed),
+      });
+    } catch (error) {
+      // Error handling
+      updateDocument(newDoc.id, { status: 'error' });
+      toast.error('Upload Failed', {
+        description: error instanceof Error ? error.message : 'Failed to upload document',
+      });
+      console.error('Upload error:', error);
+    }
+  };

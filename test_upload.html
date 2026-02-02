@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VeriSearch Direct Upload Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .container {
+            border: 2px solid #4CAF50;
+            padding: 30px;
+            border-radius: 10px;
+            background: #f9f9f9;
+        }
+        h1 { color: #4CAF50; }
+        input[type="file"] {
+            padding: 10px;
+            margin: 10px 0;
+            border: 2px dashed #ccc;
+            border-radius: 5px;
+            width: 100%;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        button:hover { background: #45a049; }
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+        .success { background: #d4edda; border: 1px solid #c3e6cb; color: #155724; }
+        .error { background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; }
+        .loading { background: #fff3cd; border: 1px solid #ffeaa7; color: #856404; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 VeriSearch Upload Test</h1>
+        <p>This is a simple test page to upload documents directly to the backend.</p>
+        
+        <input type="file" id="fileInput" accept=".pdf,.txt,.csv,.xlsx,.xls">
+        <button onclick="uploadFile()">Upload Document</button>
+        
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:8000';
+
+        async function uploadFile() {
+            const fileInput = document.getElementById('fileInput');
+            const resultDiv = document.getElementById('result');
+            
+            if (!fileInput.files || fileInput.files.length === 0) {
+                showResult('Please select a file first!', 'error');
+                return;
+            }
+
+            const file = fileInput.files[0];
+            console.log('📤 Uploading file:', file.name, file.size, 'bytes');
+            
+            showResult('Uploading and indexing... Please wait.', 'loading');
+
+            try {
+                const formData = new FormData();
+                formData.append('file', file);
+
+                console.log('🚀 Sending request to:', `${API_URL}/ingest`);
+                const response = await fetch(`${API_URL}/ingest`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                console.log('📥 Response status:', response.status);
+
+                if (!response.ok) {
+                    const error = await response.json().catch(() => ({ detail: 'Upload failed' }));
+                    throw new Error(error.detail || `HTTP ${response.status}`);
+                }
+
+                const data = await response.json();
+                console.log('✅ Success:', data);
+
+                showResult(
+                    `✅ Success!<br>
+                    <strong>File:</strong> ${data.filename}<br>
+                    <strong>Chunks Processed:</strong> ${data.chunks_processed}<br>
+                    <strong>Document ID:</strong> ${data.doc_id}<br>
+                    <strong>Status:</strong> ${data.status}`,
+                    'success'
+                );
+
+                // Clear file input
+                fileInput.value = '';
+
+            } catch (error) {
+                console.error('❌ Error:', error);
+                showResult(`❌ Upload Failed<br><strong>Error:</strong> ${error.message}`, 'error');
+            }
+        }
+
+        function showResult(message, type) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = message;
+            resultDiv.className = type;
+            resultDiv.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

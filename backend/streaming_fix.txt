@@ -1,0 +1,16 @@
+        response = model.generate_content(prompt, stream=True)
+        
+        has_content = False
+        for chunk in response:
+            text = safe_get_chunk_text(chunk)
+            if text:
+                has_content = True
+                yield f'data: {json.dumps({"type": "content", "data": text})}\\n\\n'
+        
+        # If no content (blocked by safety filters)
+        if not has_content:
+            msg = "Response was blocked by safety filters. Try rephrasing your question or asking about different content."
+            yield f'data: {json.dumps({"type": "content", "data": msg})}\\n\\n'
+        
+        yield f'data: {json.dumps({"type": "done"})}\\n\\n'
+        logger.info("✅ Streaming completed")

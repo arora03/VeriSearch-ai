@@ -1,0 +1,24 @@
+# Core Framework
+fastapi
+uvicorn[standard]
+python-dotenv
+python-multipart
+
+# LangChain Ecosystem  
+langchain
+langchain-community
+
+# Vector Store & Embeddings
+faiss-cpu
+sentence-transformers
+
+# Google Gemini
+google-generativeai
+
+# Document Parsing
+pypdf
+pandas
+openpyxl
+
+# Utilities
+pydantic
